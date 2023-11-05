@@ -3,7 +3,6 @@ package com.knoma.pojo;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.core.annotation.ReflectiveAccess;
 
 import java.util.UUID;
 

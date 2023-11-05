@@ -3,11 +3,10 @@ package com.knoma;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.MappedAsyncPagingIterable;
-
 import com.knoma.pojo.Person;
 import com.knoma.pojo.PersonDAO;
-import io.micronaut.http.MediaType;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
@@ -18,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,10 +47,12 @@ public class PersonController {
     }
 
     @Get(uri = "/all", produces = MediaType.APPLICATION_JSON)
-    public Flux<Person> getAll() {
+    public Mono<HttpResponse<List<Person>>> getAll() {
         log.info("Received request to index endpoint");
         return Mono.fromCompletionStage(personDAO.getAll())
-                .flatMapIterable(MappedAsyncPagingIterable::currentPage);
+                .flatMapIterable(MappedAsyncPagingIterable::currentPage)
+                .collectList()
+                .map(HttpResponse::ok);
     }
 
     @Get(uri = "/count", produces = MediaType.APPLICATION_JSON)
@@ -61,7 +63,7 @@ public class PersonController {
     }
 
     @Post(uri = "/", produces = MediaType.APPLICATION_JSON)
-    public Mono<Void> save(Person person) {
-        return Mono.fromCompletionStage(() -> personDAO.saveAsync(person));
+    public Mono<HttpResponse<Void>> save(Person person) {
+        return Mono.fromCompletionStage(() -> personDAO.saveAsync(person)).map(HttpResponse::ok);
     }
 }
