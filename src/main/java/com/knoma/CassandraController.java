@@ -23,9 +23,9 @@ public class CassandraController {
         this.session = session;
     }
 
-    @Get(uri = "/version", produces = MediaType.APPLICATION_JSON)
+    @Get(uri = "/", produces = MediaType.APPLICATION_JSON)
     public Mono<HttpResponse<Map<String, String>>> get() {
-        return Mono.from(session.executeReactive("SELECT cql_version FROM system.local;"))
+        return Mono.from(session.executeReactive("SELECT release_version FROM system.local;"))
                 .map(v -> HttpResponse.ok(Map.of("version", v.getString(0))));
     }
 }
