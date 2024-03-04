@@ -3,4 +3,4 @@ defaultPackage: com.knoma
 testFramework: junit
 sourceLanguage: java
 buildTool: gradle_kotlin
-features: [app-name, cassandra, graalvm, gradle, http-client-test, jackson-databind, java, java-application, junit, logback, micronaut-aot, micronaut-build, micronaut-http-validation, netty-server, properties, reactor, reactor-http-client, readme, shade]
+features: [app-name, cassandra, graalvm, gradle, http-client, java, java-application, junit, logback, micronaut-aot, micronaut-build, micronaut-http-validation, netty-server, properties, reactor, reactor-http-client, readme, serialization-jackson, shade, static-resources]
