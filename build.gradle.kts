@@ -7,7 +7,7 @@ plugins {
 version = "0.1"
 group = "com.knoma"
 
-val casandraDriverVersion: String by project
+val casandraDriverVersion=project.properties.get("casandraDriverVersion")
 
 repositories {
     mavenCentral()
@@ -17,12 +17,13 @@ dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micrometer:context-propagation")
-    implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.cassandra:micronaut-cassandra")
     implementation("io.micronaut.reactor:micronaut-reactor")
     implementation("io.micronaut.reactor:micronaut-reactor-http-client")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
+    compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation("io.micronaut:micronaut-http-client")
 
     implementation("com.datastax.oss:java-driver-mapper-runtime:$casandraDriverVersion")
     annotationProcessor("com.datastax.oss:java-driver-mapper-processor:$casandraDriverVersion")
@@ -30,14 +31,14 @@ dependencies {
 
 
 application {
-    mainClass.set("com.knoma.Application")
+    mainClass = "com.knoma.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
     targetCompatibility = JavaVersion.toVersion("21")
 }
 
-graalvmNative.toolchainDetection.set(false)
+graalvmNative.toolchainDetection = false
 micronaut {
     runtime("netty")
     testRuntime("junit5")
@@ -46,24 +47,22 @@ micronaut {
         annotations("com.knoma.*")
     }
     aot {
-    // Please review carefully the optimizations enabled below
-    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
-        optimizeServiceLoading.set(false)
-        convertYamlToJava.set(false)
-        precomputeOperations.set(true)
-        cacheEnvironment.set(true)
-        optimizeClassLoading.set(true)
-        deduceEnvironment.set(true)
-        optimizeNetty.set(true)
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        replaceLogbackXml = true
     }
 }
 
-tasks.named<io.micronaut.gradle.docker.MicronautDockerfile>("dockerfile") {
-    baseImage("eclipse-temurin:21-jre-jammy")
-}
 
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion.set("21")
+    jdkVersion = "21"
 }
 
 
