@@ -1,7 +1,7 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.3.8"
-    id("io.micronaut.aot") version "4.3.8"
+    id("com.gradleup.shadow") version "8.3.9"
+    id("io.micronaut.application") version "4.6.0"
+    id("io.micronaut.aot") version "4.6.0"
 }
 
 version = "0.1"
@@ -34,8 +34,8 @@ application {
     mainClass = "com.knoma.Application"
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("21")
-    targetCompatibility = JavaVersion.toVersion("21")
+    sourceCompatibility = JavaVersion.toVersion("25")
+    targetCompatibility = JavaVersion.toVersion("25")
 }
 
 graalvmNative.toolchainDetection = false
@@ -62,7 +62,6 @@ micronaut {
 
 
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion = "21"
+    jdkVersion = "25"
 }
-
 
